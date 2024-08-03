@@ -1,8 +1,5 @@
 These examples demonstrate more advanced and visually engaging techniques to create impressive 3D effects with images.
 
-=====================================================================
-============================ Explanation ============================
-=====================================================================
 
 Explanation:
 
