@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Image Cube</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #222;
+            margin: 0;
+            color: #fff;
+        }
+        .scene {
+            width: 300px;
+            height: 300px;
+            perspective: 1000px;
+        }
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(0deg) rotateY(0deg);
+            transition: transform 1s;
+        }
+        .cube img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+        }
+        .front  { transform: rotateY(0deg) translateZ(150px); }
+        .back   { transform: rotateY(180deg) translateZ(150px); }
+        .left   { transform: rotateY(-90deg) translateZ(150px); }
+        .right  { transform: rotateY(90deg) translateZ(150px); }
+        .top    { transform: rotateX(90deg) translateZ(150px); }
+        .bottom { transform: rotateX(-90deg) translateZ(150px); }
+        form {
+            margin-bottom: 20px;
+        }
+        input {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <form id="imageForm">
+        <input type="file" id="front" accept="image/*"> Front<br>
+        <input type="file" id="back" accept="image/*"> Back<br>
+        <input type="file" id="left" accept="image/*"> Left<br>
+        <input type="file" id="right" accept="image/*"> Right<br>
+        <input type="file" id="top" accept="image/*"> Top<br>
+        <input type="file" id="bottom" accept="image/*"> Bottom<br>
+    </form>
+    <div class="scene">
+        <div class="cube">
+            <img src="https://via.placeholder.com/300x300.png?text=Front" class="front" alt="Front">
+            <img src="https://via.placeholder.com/300x300.png?text=Back" class="back" alt="Back">
+            <img src="https://via.placeholder.com/300x300.png?text=Left" class="left" alt="Left">
+            <img src="https://via.placeholder.com/300x300.png?text=Right" class="right" alt="Right">
+            <img src="https://via.placeholder.com/300x300.png?text=Top" class="top" alt="Top">
+            <img src="https://via.placeholder.com/300x300.png?text=Bottom" class="bottom" alt="Bottom">
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('input[type="file"]').forEach(input => {
+            input.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        document.querySelector(`.${e.target.id}`).src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+        document.querySelector('.scene').addEventListener('mousemove', (e) => {
+            const cube = document.querySelector('.cube');
+            const x = e.clientX / window.innerWidth - 0.5;
+            const y = e.clientY / window.innerHeight - 0.5;
+            cube.style.transform = `rotateX(${y * 360}deg) rotateY(${x * 360}deg)`;
+        });
+    </script>
+</body>
+</html>
